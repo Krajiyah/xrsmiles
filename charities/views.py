@@ -71,6 +71,8 @@ def pay(value, dest, currency):
 	c2.close()
 
 
+"""
+TODO: Get this working
 def sendBTC(request): 
 	address = request.address
 	receiving = "1KBGCThhCs1ohCaxCkwasgVMHDNFbrd3RU"
@@ -95,6 +97,6 @@ def sendBTC(request):
 			userinfo.isvalid=True
 		else:
 			print "payment not received."
-
+"""
 
 # Create your views here.
