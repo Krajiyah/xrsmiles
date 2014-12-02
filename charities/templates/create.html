@@ -1,0 +1,9 @@
+<p> {{charity.charity_name}} </p>
+
+<p> {{charity.charity_description}} </p>
+
+<form action="/charities/{{charity.id}}/" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="OK">
+</form>
