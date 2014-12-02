@@ -9,6 +9,7 @@ import json, os, pycurl
 def index(request):
 	list_of_charities = Charity.objects.order_by('-charity_name')
 	output = '<p>'.join(['<a href = ' + str(c.id) + '>' + c.charity_name + '</a>' for c in list_of_charities][::-1])
+	output = '<img src = /static/xrsmiles.jpg/>' + '<br/>' + output
 	return HttpResponse(output)
 
 def show(request, charity_id):
