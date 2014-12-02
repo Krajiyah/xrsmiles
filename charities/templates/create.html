@@ -1,13 +1,24 @@
-{% load staticfiles %}
-
-<img src="/static/xrsmiles.jpg">
-
-<p> {{charity.charity_name}} </p>
-
-<p> {{charity.charity_description}} </p>
-
-<form action="/charities/{{charity.id}}/" method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="OK">
-</form>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/style.css">
+	<link rel="stylesheet" type="text/css" href="/static/normalize.css" />
+	<link rel="icon" type="image/x-icon" href="/static/xrsmiles.png">
+	<script src="/static/modernizr.custom.js"></script>
+</head>
+<body>
+	<div class="FLOATtxtContainer">
+		<p class="FLOATtxt"> {{charity.charity_name}}</p>
+	</div>
+	<div class="CharityContainer">
+		<div class="formContainer">
+			{% load staticfiles %}
+			<p> {{charity.charity_description}} </p>
+			<form action="/charities/{{charity.id}}/" method="post">
+		    	{% csrf_token %}
+		    	{{form.as_p}}
+		    	<input type="submit" value="OK">
+			</form>
+		</div>
+	</div>
+</body>
+</html>

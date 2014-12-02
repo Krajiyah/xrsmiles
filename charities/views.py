@@ -8,8 +8,12 @@ import json, os, pycurl
 
 def index(request):
 	list_of_charities = Charity.objects.order_by('-charity_name')
-	output = '<p>'.join(['<a href = ' + str(c.id) + '>' + c.charity_name + '</a>' for c in list_of_charities][::-1])
-	output = '<img src = /static/xrsmiles.jpg/>' + '<br/>' + output
+	lines = open('charities/templates/main.html', 'r').read().splitlines()
+	output = ""
+	for line in lines:
+		output += line
+	output += ''.join(['<a href = ' + str(c.id) + '>' + c.charity_name + '</a>' for c in list_of_charities][::-1])
+	output = "</nav></section></div></body></html>" + output
 	return HttpResponse(output)
 
 def show(request, charity_id):
@@ -27,7 +31,6 @@ def show(request, charity_id):
 	form.fields['is_transaction_complete'].widget = forms.HiddenInput()
 	form.fields['is_valid'].widget = forms.HiddenInput()
 	return render(request, 'create.html', {'form' : form, 'charity' : charity})
-
 
 def pay(value, source, secret, dest):
 	#get valid client id
