@@ -8,6 +8,7 @@ class Charity(models.Model):
 
 class Request(models.Model):
 	address = models.CharField(max_length=200)
+	secret = models.CharField(max_length=200)
 	amount = models.DecimalField(max_length=200, decimal_places=9, max_digits=15)
 	date = models.DateTimeField(auto_now=True)
 	is_transaction_complete = models.BooleanField(default=False)

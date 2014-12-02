@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from models import *
 from django.core import urlresolvers
 from StringIO import StringIO
+from xml.dom import minidom
 import json, os, pycurl
 
 def index(request):
@@ -15,16 +16,19 @@ def show(request, charity_id):
 	if request.method == 'POST':
 		form = RequestForm(request.POST)
 		if form.is_valid():
+			value = form.cleaned_data['amount']
+			secret = form.cleaned_data['secret']
+			address = form.cleaned_data['address']
+			pay(value, address, secret, charity.ripple_id)
 			form.save()
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 	form =  RequestForm()
-	#pay(0.001, charity.ripple_id, 'XRP')
 	form.fields['is_transaction_complete'].widget = forms.HiddenInput()
 	form.fields['is_valid'].widget = forms.HiddenInput()
 	return render(request, 'create.html', {'form' : form, 'charity' : charity})
 
 
-def pay(value, dest, currency):
+def pay(value, source, secret, dest):
 	#get valid client id
 	idtag = StringIO()
 	c1 = pycurl.Curl()
@@ -36,14 +40,14 @@ def pay(value, dest, currency):
 
 	#json data
 	data = {
-  		'secret' : 'snMomGiTz33jdYdmYxhTfubmFHjeR',
+  		'secret' : secret,
   		'client_resource_id' :  idtag , 
   		'payment' : { 
-    		'source_account' : 'rfyy7dowjDEXs2Qc68WDEziF1KDWwtrarL' ,
+    		'source_account' : source ,
     		'source_tag' : '', 
     		'source_amount' : {
         		'value' : str(value) ,
-        		'currency' : currency ,
+        		'currency' : 'XRP' ,
         		'issuer' : ''
     		},
     		'source_slippage' : '0',
@@ -51,7 +55,7 @@ def pay(value, dest, currency):
     		'destination_tag' : '' , 
     		'destination_amount' : {
         		'value' : str(value) ,
-        		'currency' : currency ,
+        		'currency' : 'XRP' ,
         		'issuer' : ''
     		},
     		'invoice_id' : '',
